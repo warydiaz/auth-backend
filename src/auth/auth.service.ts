@@ -16,14 +16,14 @@ export class AuthService {
   async validateUser(email: string, password: string) {
     const user = await this.userService.findByEmail(email);
     if (!user) {
-      throw new UnauthorizedException('Credenciales inválidas');
+      throw new UnauthorizedException('Invalid credentials');
     }
     if (user.isBlocked) {
-      throw new ForbiddenException('La cuenta está bloqueada');
+      throw new ForbiddenException('The account is blocked');
     }
     const passwordValid = await bcrypt.compare(password, user.password);
     if (!passwordValid) {
-      throw new UnauthorizedException('Credenciales inválidas');
+      throw new UnauthorizedException('Invalid credentials');
     }
     return { id: user.id, email: user.email };
   }
