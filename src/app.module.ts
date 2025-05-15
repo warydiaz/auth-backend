@@ -1,14 +1,20 @@
+/* eslint-disable @typescript-eslint/no-unsafe-assignment */
 import { Module } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
-import { RedisModule } from './core/infrastructure/redis/redis.module';
 import { JwtModule } from '@nestjs/jwt';
-import { typeOrmConfig } from './core/config/typeorm.config';
 import { TypeOrmModule } from '@nestjs/typeorm';
+import { RedisModule } from './core/infrastructure/redis/redis.module';
+import { RedisTokenStore } from './core/infrastructure/redis/redis-token-store.service';
+import { JwtGeneratorService } from './core/infrastructure/jwt/jwt-generator.service';
+import { typeOrmConfig } from './core/config/typeorm.config';
 import { UserPersistenceEntity } from './core/infrastructure/postgres/entities/user.persistence.entity';
+import { UserTypeOrmRepository } from './core/infrastructure/postgres/user-repository';
 import { LoginUserCommandHandler } from './core/application/login/login-user.command-handler';
+import { LoginService } from './core/application/login/login.service';
 import { PostUserLoginController } from './core/ui/api/post-user-login.controller';
 import { USER_REPOSITORY } from './core/domain/user/user.repository';
-import { UserTypeOrmRepository } from './core/infrastructure/postgres/user-repository';
+import { TOKEN_STORE } from './core/application/login/ports/token-store.port';
+import { JWT_GENERATOR } from './core/application/login/ports/jwt-generator.port';
 
 @Module({
   imports: [
@@ -24,7 +30,10 @@ import { UserTypeOrmRepository } from './core/infrastructure/postgres/user-repos
   controllers: [PostUserLoginController],
   providers: [
     LoginUserCommandHandler,
+    LoginService,
     { provide: USER_REPOSITORY, useClass: UserTypeOrmRepository },
+    { provide: TOKEN_STORE, useClass: RedisTokenStore },
+    { provide: JWT_GENERATOR, useClass: JwtGeneratorService },
   ],
 })
 export class AppModule {}

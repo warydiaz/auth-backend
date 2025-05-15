@@ -34,4 +34,18 @@ export class UserTypeOrmRepository implements UserRepository {
 
     return { id: dbUser.id, email: dbUser.email };
   }
+
+  async findByEmail(
+    email: Email,
+  ): Promise<{ id: string; email: string } | null> {
+    const dbUser = await this.userRepository.findOne({
+      where: { email: email.value },
+    });
+
+    if (!dbUser) {
+      return null;
+    }
+
+    return { id: dbUser.id, email: dbUser.email };
+  }
 }
