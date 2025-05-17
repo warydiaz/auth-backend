@@ -17,7 +17,7 @@ export class UserTypeOrmRepository implements UserRepository {
     private readonly userRepository: Repository<UserPersistenceEntity>,
   ) {}
 
-  async validate(user: UserEntity): Promise<{ id: string; email: string }> {
+  async validate(user: UserEntity): Promise<UserEntity> {
     const email: Email = user.email;
     const dbUser = await this.userRepository.findOne({
       where: { email: email.value },
@@ -32,12 +32,22 @@ export class UserTypeOrmRepository implements UserRepository {
       throw new UnauthorizedException('Invalid credentials');
     }
 
-    return { id: dbUser.id, email: dbUser.email };
+    return this.toDomain(dbUser);
   }
 
-  async findByEmail(
-    email: Email,
-  ): Promise<{ id: string; email: string } | null> {
+  async findById(id: string): Promise<UserEntity | null> {
+    const dbUser = await this.userRepository.findOne({
+      where: { id },
+    });
+
+    if (!dbUser) {
+      return null;
+    }
+
+    return this.toDomain(dbUser);
+  }
+
+  async findByEmail(email: Email): Promise<UserEntity | null> {
     const dbUser = await this.userRepository.findOne({
       where: { email: email.value },
     });
@@ -46,6 +56,18 @@ export class UserTypeOrmRepository implements UserRepository {
       return null;
     }
 
-    return { id: dbUser.id, email: dbUser.email };
+    return this.toDomain(dbUser);
+  }
+
+  async updatePassword(id: string, hashedPassword: string): Promise<void> {
+    await this.userRepository.update(id, { password: hashedPassword });
+  }
+
+  private toDomain(user: UserPersistenceEntity): UserEntity {
+    return UserEntity.create(
+      user.email,
+      user.password ?? undefined,
+      user.id ?? undefined,
+    );
   }
 }

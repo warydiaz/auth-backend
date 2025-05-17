@@ -33,11 +33,11 @@ export class RecoverAccountCommandHandler {
       (expiresAt.getTime() - Date.now()) / 1000,
     );
 
-    await this.tokenStore.save(user.id, token, expiresInSeconds);
+    await this.tokenStore.save(user.id!, token, expiresInSeconds);
 
     const resetLink = `https://tuapp.com/reset-password/${token}`;
     await this.mailer.sendMail({
-      to: user.email,
+      to: user.email.value,
       subject: 'Recuperación de cuenta',
       html: `<p>Haz clic <a href="${resetLink}">aquí</a> para recuperar tu cuenta.</p>`,
     });

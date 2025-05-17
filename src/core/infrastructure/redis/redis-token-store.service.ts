@@ -14,4 +14,13 @@ export class RedisTokenStore implements TokenStorePort {
       timeStore ?? 3600,
     );
   }
+  async invalidate(token: string): Promise<void> {
+    const key = `auth_token:${token}`;
+    await this.redisService.del(key);
+  }
+
+  async getUserIdFromToken(token: string): Promise<string | null> {
+    const key = `auth_token:${token}`;
+    return this.redisService.get(key);
+  }
 }

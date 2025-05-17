@@ -19,6 +19,12 @@ export class LoginUserCommandHandler {
   async handle(command: LoginUserCommand): Promise<UserDataCommand> {
     const user = UserEntity.create(command.email, command.password);
 
-    return await this.userRepository.validate(user);
+    const userData = await this.userRepository.validate(user);
+    const userDataCommand = new UserDataCommand(
+      userData.id!,
+      userData.email.value,
+    );
+
+    return userDataCommand;
   }
 }
