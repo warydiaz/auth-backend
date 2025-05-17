@@ -4,6 +4,7 @@ import { Response } from 'express';
 import { BaseError } from '../../../error';
 import { InvalidEmailError } from 'src/core/domain/user/invalid-email.error';
 import { UnauthorizedException } from '@nestjs/common';
+import { NewCredentialsInvalidError } from 'src/core/application/reset-password/reset-password-new-credentials.error';
 
 export class ErrorResponse {
   code: string;
@@ -29,7 +30,7 @@ export const catchError = (error: Error, response: Response) => {
     response.status(500).json(ErrorResponse.internalServerError(error));
   }
 
-  if (error instanceof UnauthorizedException) {
+  if (error instanceof UnauthorizedException || NewCredentialsInvalidError) {
     const baseError = {
       name: 'UnauthorizedException',
       code: 'UNAUTHORIZED',
