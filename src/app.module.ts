@@ -15,6 +15,9 @@ import { PostUserLoginController } from './core/ui/api/post-user-login.controlle
 import { USER_REPOSITORY } from './core/domain/user/user.repository';
 import { TOKEN_STORE } from './core/application/login/ports/token-store.port';
 import { JWT_GENERATOR } from './core/application/login/ports/jwt-generator.port';
+import { RecoverAccountCommandHandler } from './core/application/recover-account/recover-account.command-handler';
+import { MailerService } from './core/infrastructure/email/nodemailer.service';
+import { ResetPasswordCommandHandler } from './core/application/reset-password/reset-password.command.handler';
 
 @Module({
   imports: [
@@ -31,6 +34,9 @@ import { JWT_GENERATOR } from './core/application/login/ports/jwt-generator.port
   providers: [
     LoginUserCommandHandler,
     LoginService,
+    RecoverAccountCommandHandler,
+    MailerService,
+    ResetPasswordCommandHandler,
     { provide: USER_REPOSITORY, useClass: UserTypeOrmRepository },
     { provide: TOKEN_STORE, useClass: RedisTokenStore },
     { provide: JWT_GENERATOR, useClass: JwtGeneratorService },

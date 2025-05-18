@@ -8,8 +8,7 @@ import {
   USER_REPOSITORY,
   UserRepository,
 } from '../../domain/user/user.repository';
-import { TokenStorePort } from '../login/ports/token-store.port';
-import { JwtGeneratorPort } from '../login/ports/jwt-generator.port';
+import { TOKEN_STORE, TokenStorePort } from '../login/ports/token-store.port';
 import { NewCredentialsInvalidError } from './reset-password-new-credentials.error';
 import * as bcrypt from 'bcrypt';
 
@@ -18,8 +17,7 @@ export class ResetPasswordCommandHandler {
   constructor(
     @Inject(USER_REPOSITORY)
     private readonly userRepository: UserRepository,
-    @Inject('TokenStorePort') private readonly tokenStore: TokenStorePort,
-    @Inject('JwtGeneratorPort') private readonly jwtGenerator: JwtGeneratorPort,
+    @Inject(TOKEN_STORE) private readonly tokenStore: TokenStorePort,
   ) {}
 
   saltRounds: number = parseInt(process.env.SALT_ROUNDS ?? '10');

@@ -8,7 +8,7 @@ import {
   UserRepository,
 } from '../../domain/user/user.repository';
 import { Email } from 'src/core/domain/user/email';
-import { TokenStorePort } from '../login/ports/token-store.port';
+import { TOKEN_STORE, TokenStorePort } from '../login/ports/token-store.port';
 import { MailerService } from 'src/core/infrastructure/email/nodemailer.service';
 import * as crypto from 'crypto';
 
@@ -17,7 +17,7 @@ export class RecoverAccountCommandHandler {
   constructor(
     @Inject(USER_REPOSITORY)
     private readonly userRepository: UserRepository,
-    @Inject('TokenStorePort') private readonly tokenStore: TokenStorePort,
+    @Inject(TOKEN_STORE) private readonly tokenStore: TokenStorePort,
     private readonly mailer: MailerService,
   ) {}
 
