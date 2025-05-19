@@ -35,7 +35,7 @@ export class RecoverAccountCommandHandler {
 
     await this.tokenStore.save(user.id!, token, expiresInSeconds);
 
-    const resetLink = `https://tuapp.com/reset-password/${token}`;
+    const resetLink = `localhost:3001/reset-password/${token}`;
     await this.mailer.sendMail({
       to: user.email.value,
       subject: 'Recuperación de cuenta',

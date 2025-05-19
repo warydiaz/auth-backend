@@ -18,6 +18,8 @@ import { JWT_GENERATOR } from './core/application/login/ports/jwt-generator.port
 import { RecoverAccountCommandHandler } from './core/application/recover-account/recover-account.command-handler';
 import { MailerService } from './core/infrastructure/email/nodemailer.service';
 import { ResetPasswordCommandHandler } from './core/application/reset-password/reset-password.command.handler';
+import { PostRecoverAccountController } from './core/ui/api/post-recover-account.controller';
+import { PostResetPasswordController } from './core/ui/api/post-reset-password.controller';
 
 @Module({
   imports: [
@@ -30,7 +32,11 @@ import { ResetPasswordCommandHandler } from './core/application/reset-password/r
     }),
     RedisModule,
   ],
-  controllers: [PostUserLoginController],
+  controllers: [
+    PostUserLoginController,
+    PostRecoverAccountController,
+    PostResetPasswordController,
+  ],
   providers: [
     LoginUserCommandHandler,
     LoginService,

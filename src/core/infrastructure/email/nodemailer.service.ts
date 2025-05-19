@@ -29,7 +29,7 @@ export class MailerService {
   }): Promise<void> {
     try {
       await this.transporter.sendMail({
-        from: options.from || `"Tu App" <${process.env.SMTP_USER}>`,
+        from: options.from || `"NEXTEST" <${process.env.SMTP_USER}>`,
         to: options.to,
         subject: options.subject,
         html: options.html,

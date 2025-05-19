@@ -13,14 +13,20 @@ export class RedisTokenStore implements TokenStorePort {
       'EX',
       timeStore ?? 3600,
     );
+    await this.redisService.set(
+      `token:${token}`,
+      userId,
+      'EX',
+      timeStore ?? 3600,
+    );
   }
   async invalidate(token: string): Promise<void> {
-    const key = `auth_token:${token}`;
+    const key = `token:${token}`;
     await this.redisService.del(key);
   }
 
   async getUserIdFromToken(token: string): Promise<string | null> {
-    const key = `auth_token:${token}`;
+    const key = `token:${token}`;
     return this.redisService.get(key);
   }
 }
