@@ -54,3 +54,11 @@ pids
 
 # Diagnostic reports (https://nodejs.org/api/report.html)
 report.[0-9]*.[0-9]*.[0-9]*.[0-9]*.json
+
+# Terraform
+.terraform/
+*.tfstate
+*.tfstate.*
+*.tfvars # Opcional: si tienes tfvars con información sensible que no quieres commitear.
+# Por ejemplo, puedes tener un "terraform.tfvars.example" para commitear.
+.terraform.d/

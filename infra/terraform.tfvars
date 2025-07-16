@@ -1,0 +1,5 @@
+project_id = "unified-booster-465912-f9"
+region     = "europe-southwest1"
+zone_a     = "europe-southwest1-a"
+zone_b     = "europe-southwest1-b"
+service_account_email = "561764945446-compute@developer.gserviceaccount.com"
