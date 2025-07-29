@@ -7,9 +7,9 @@ import {
   USER_REPOSITORY,
   UserRepository,
 } from '../../domain/user/user.repository';
-import { Email } from 'src/core/domain/user/email';
+import { Email } from '../../domain/user/email';
 import { TOKEN_STORE, TokenStorePort } from '../login/ports/token-store.port';
-import { MailerService } from 'src/core/infrastructure/email/nodemailer.service';
+import { MailerService } from '../../infrastructure/email/nodemailer.service';
 import * as crypto from 'crypto';
 
 @Injectable()
