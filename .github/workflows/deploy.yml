@@ -3,7 +3,7 @@ name: Deploy Docker Image to Google Artifact Registry
 on:
   push:
     branches:
-      - master  # o main, según tu rama principal
+      - main  # o main, según tu rama principal
 
 jobs:
   deploy:
