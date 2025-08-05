@@ -7,7 +7,7 @@ import {
   USER_REPOSITORY,
   UserRepository,
 } from '../../domain/user/user.repository';
-import { UserEntity } from 'src/core/domain/user/user.entity';
+import { UserEntity } from '../../domain/user/user.entity';
 
 @Injectable()
 export class LoginUserCommandHandler {

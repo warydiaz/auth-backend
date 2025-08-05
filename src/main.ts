@@ -3,6 +3,20 @@ import { AppModule } from './app.module';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
-  await app.listen(process.env.PORT ?? 3001);
+  app.enableCors({
+    origin: (origin, callback) => {
+      const allowedOrigins = [
+        'https://nextest.santitorrabadella.com',
+        'http://localhost:3000',
+      ];
+      if (!origin || allowedOrigins.includes(origin)) {
+        callback(null, true);
+      } else {
+        callback(new Error('Not allowed by CORS'));
+      }
+    },
+    credentials: true,
+  });
+  await app.listen(process.env.PORT!);
 }
 bootstrap();
