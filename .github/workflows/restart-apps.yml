@@ -1,0 +1,50 @@
+name: Restart Auth App on VMs
+
+on:
+  workflow_run:
+    workflows: ["Deploy Docker Image to Google Artifact Registry"]
+    branches: [main]
+    types:
+      - completed
+
+jobs:
+  restart-auth-app:
+    if: ${{ github.event.workflow_run.conclusion == 'success' }}
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        instance: [app-a, app-b]
+        ip: [34.175.112.250, 34.175.233.72]
+    steps:
+      - name: Connect via SSH and restart container
+        uses: appleboy/ssh-action@v1.0.3
+        with:
+          host: ${{ matrix.ip }}
+          username: github-actions
+          key: ${{ secrets.SSH_PRIVATE_KEY }}
+          script: |
+            echo "Stopping old Docker container..."
+            docker stop auth-backend || true
+            docker rm auth-backend || true
+            docker rmi europe-southwest1-docker.pkg.dev/unified-booster-465912-f9/services-docker/auth-backend:latest || true
+
+            echo "Running new Docker container..."
+            docker run -d \
+              --name auth-backend \
+              -e DB_HOST=10.42.0.2 \
+              -e DB_PORT=5432 \
+              -e DB_USERNAME=postgres \
+              -e DB_PASSWORD=postgres \
+              -e DB_NAME=postgres \
+              -e SALT_ROUNDS=10 \
+              -e JWT_SECRET=super-secret-key-graham \
+              -e REDIS_HOST=10.115.101.204 \
+              -e REDIS_PORT=6379 \
+              -e SMTP_HOST=smtp.gmail.com \
+              -e SMTP_PORT=587 \
+              -e SMTP_USER=not.replay.nexttest@gmail.com \
+              -e SMTP_PASS='pzxd lfdl pckl fojp' \
+              -e PORT=80 \
+              -e URL=https://nextest.santitorrabadella.com \
+              -p 80:80 \
+              europe-southwest1-docker.pkg.dev/unified-booster-465912-f9/services-docker/auth-backend:latest
