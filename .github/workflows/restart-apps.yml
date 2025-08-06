@@ -13,16 +13,28 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        instance: [app-a, app-b]
-        ip: [34.175.112.250, 34.175.233.72]
+        include:
+          - instance: app-a
+            ip: 34.175.112.250
+          - instance: app-b
+            ip: 34.175.233.72
+
     steps:
-      - name: Connect via SSH and restart container
+      - name: Connect via SSH and restart container on ${{ matrix.instance }}
         uses: appleboy/ssh-action@v1.0.3
         with:
           host: ${{ matrix.ip }}
           username: github-actions
           key: ${{ secrets.SSH_PRIVATE_KEY }}
           script: |
+            echo "Ensuring Docker is configured to use gcloud as credential helper..."
+            if ! grep -q "europe-southwest1-docker.pkg.dev" ~/.docker/config.json 2>/dev/null; then
+              echo "Configuring Docker credential helper for Artifact Registry..."
+              gcloud auth configure-docker europe-southwest1-docker.pkg.dev
+            else
+              echo "Docker is already configured for Artifact Registry."
+            fi
+
             echo "Stopping old Docker container..."
             docker stop auth-backend || true
             docker rm auth-backend || true
