@@ -1,9 +1,11 @@
 name: Deploy Docker Image to Google Artifact Registry
 
 on:
-  push:
-    branches:
-      - main  # o main, según tu rama principal
+  workflow_run:
+    workflows: ["Run Tests"]
+    branches: [main]
+    types:
+      - completed
 
 jobs:
   deploy:
