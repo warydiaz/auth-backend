@@ -12,6 +12,7 @@ terraform {
 provider "google" {
   project = var.project_id
   region  = var.region
+  credentials = file("./sa-key.json")
 }
 
 resource "google_compute_network" "vpc" {

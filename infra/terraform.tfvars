@@ -1,5 +1,5 @@
-project_id = "unified-booster-465912-f9"
+project_id = "ringed-system-473012-n2"
 region     = "europe-southwest1"
 zone_a     = "europe-southwest1-a"
 zone_b     = "europe-southwest1-b"
-service_account_email = "561764945446-compute@developer.gserviceaccount.com"
+service_account_email = "my-service-account@ringed-system-473012-n2.iam.gserviceaccount.com"

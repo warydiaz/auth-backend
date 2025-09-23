@@ -15,9 +15,9 @@ jobs:
       matrix:
         include:
           - instance: app-a
-            ip: 34.175.112.250
+            ip: 34.175.102.42
           - instance: app-b
-            ip: 34.175.233.72
+            ip: 34.175.242.107
 
     steps:
       - name: Connect via SSH and restart container on ${{ matrix.instance }}
@@ -43,14 +43,14 @@ jobs:
             echo "Running new Docker container..."
             docker run -d \
               --name auth-backend \
-              -e DB_HOST=10.42.0.2 \
+              -e DB_HOST=10.106.0.2 \
               -e DB_PORT=5432 \
               -e DB_USERNAME=postgres \
               -e DB_PASSWORD=postgres \
               -e DB_NAME=postgres \
               -e SALT_ROUNDS=10 \
               -e JWT_SECRET=super-secret-key-graham \
-              -e REDIS_HOST=10.115.101.204 \
+              -e REDIS_HOST=10.104.84.20 \
               -e REDIS_PORT=6379 \
               -e SMTP_HOST=smtp.gmail.com \
               -e SMTP_PORT=587 \
