@@ -38,7 +38,7 @@ jobs:
             echo "Stopping old Docker container..."
             docker stop auth-backend || true
             docker rm auth-backend || true
-            docker rmi europe-southwest1-docker.pkg.dev/unified-booster-465912-f9/services-docker/auth-backend:latest || true
+            docker rmi europe-southwest1-docker.pkg.dev/ringed-system-473012-n2/services-docker/auth-backend:latest || true
 
             echo "Running new Docker container..."
             docker run -d \
@@ -59,4 +59,4 @@ jobs:
               -e PORT=80 \
               -e URL=https://nextest.santitorrabadella.com \
               -p 80:80 \
-              europe-southwest1-docker.pkg.dev/unified-booster-465912-f9/services-docker/auth-backend:latest
+              europe-southwest1-docker.pkg.dev/ringed-system-473012-n2/services-docker/auth-backend:latest
